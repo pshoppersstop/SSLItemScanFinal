@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".NavigateToScanActivity">
+
+    <RelativeLayout
+        android:id="@+id/rv_parent"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/black">
+
+        <FrameLayout
+            android:id="@+id/content_frame"
+            android:layout_weight="1"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" >
+        </FrameLayout>
+
+        <TextView
+            android:id="@+id/info_lable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Point the Focus Box at Barcode"
+            android:gravity="center_horizontal"
+            android:textColor="@color/white"
+            android:padding="5dp"
+            android:layout_marginTop="35dp"
+            android:textSize="16sp" />
+
+        <ImageView
+            android:id="@+id/flash"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/flash"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp"
+            android:layout_marginTop="75dp"/>
+
+    </RelativeLayout>
+
+</RelativeLayout>

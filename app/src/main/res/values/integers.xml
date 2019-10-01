@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="return_ex_comments_lenght">300</integer>
+
+    <!--barcode scanner view-->
+    <integer name="viewfinder_border_width">4</integer>
+    <integer name="viewfinder_border_center_width">2</integer>
+    <integer name="viewfinder_border_length">120</integer>
+    <integer name="viewfinder_center_line_length">40</integer>
+    <integer name="max_length_review_title">100</integer>
+    <integer name="max_length_review_description">400</integer>
+</resources>
