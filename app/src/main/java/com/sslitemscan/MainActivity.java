@@ -46,6 +46,7 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(this, ScanActivity.class);
         intent.putExtra(Constants.STOREID,PreferencesManager.getInstance().getString(Constants.STOREID));
         startActivity(intent);
+        finish();
     }
 
     @OnClick(R.id.button_scan_code)
