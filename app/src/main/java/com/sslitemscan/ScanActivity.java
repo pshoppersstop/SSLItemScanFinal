@@ -36,11 +36,6 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 showDialouge(barcode.displayValue);
             }
         });
-
-
-
-        Log.e("scannedbarcode","*********"+barcode.displayValue);
-
     }
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
