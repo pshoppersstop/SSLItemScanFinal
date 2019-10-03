@@ -1,5 +1,7 @@
 package com.sslitemscan;
 
+import android.content.DialogInterface;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -26,14 +28,20 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     }
 
     @Override
-    public void onScanned(Barcode barcode) {
+    public void onScanned(final Barcode barcode) {
         // playing barcode reader beep sound
         barcodeReader.playBeep();
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                showDialouge(barcode.displayValue);
+            }
+        });
+
+
 
         Log.e("scannedbarcode","*********"+barcode.displayValue);
 
     }
-
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
 
@@ -52,5 +60,19 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     @Override
     public void onCameraPermissionDenied() {
 
+    }
+
+
+    private void showDialouge(String productCode){
+
+        new AlertDialog.Builder(this)
+                .setMessage("Scanned Product Code: \n\n"+productCode)
+                .setPositiveButton("Scan Next", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .show();
     }
 }
