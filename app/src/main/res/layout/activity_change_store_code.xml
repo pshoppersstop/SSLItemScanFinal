@@ -22,9 +22,9 @@
         android:id="@+id/edittext_store_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Enter Store Code"
+        android:hint="Enter Store Code"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:layout_below="@+id/textview_change_store_text"
         android:layout_marginTop="22dp"
         android:textAlignment="center"/>
@@ -33,9 +33,9 @@
         android:id="@+id/edittext_reenter_store_code"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Re Enter Store Code"
+        android:hint="Re Enter Store Code"
         android:layout_centerHorizontal="true"
-        android:textColor="@color/white"
+        android:textColorHint="@color/white"
         android:layout_below="@+id/edittext_store_code"
         android:textAlignment="center"
         android:layout_marginTop="10dp"/>
