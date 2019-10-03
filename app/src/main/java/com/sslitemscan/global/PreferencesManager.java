@@ -2,8 +2,11 @@ package com.sslitemscan.global;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+
+import com.google.gson.Gson;
 import com.sslitemscan.Constants.Constants;
 import com.sslitemscan.SSLApplication;
+import com.sslitemscan.views.barcodescannerview.ScanData;
 
 import java.lang.reflect.Type;
 import java.util.Iterator;
@@ -181,6 +184,15 @@ public class PreferencesManager {
         }
         return editor.commit();
     }
+
+    public void saveHashMap(WeakHashMap<String, ScanData> inputMap) {
+        SharedPreferences.Editor prefsEditor = mSharedPreferences.edit();
+        Gson gson = new Gson();
+        String json = gson.toJson(inputMap);
+        prefsEditor.putString("ScanDataHashMap", json);
+        prefsEditor.commit();;     // This line is IMPORTANT !!!
+    }
+
 
     public void clearAll() {
         mSharedPreferences.edit().clear().commit();

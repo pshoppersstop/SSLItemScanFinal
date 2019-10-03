@@ -46,6 +46,7 @@ public class ChangeStoreCodeActivity extends AppCompatActivity {
             if (  (mETStoreCode.getText().toString()).equals(mETReEnterStoreCode.getText().toString())  ){
                 PreferencesManager.getInstance().setString(Constants.STOREID,mETStoreCode.getText().toString());
                 Toast.makeText(mContext,"Store Code Changed Sucessfully",Toast.LENGTH_SHORT).show();
+                finish();
             }else {
                 Toast.makeText(mContext,"Store Code Should Be Same",Toast.LENGTH_SHORT).show();
             }
