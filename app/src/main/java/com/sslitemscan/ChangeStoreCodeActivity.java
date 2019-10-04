@@ -44,7 +44,7 @@ public class ChangeStoreCodeActivity extends AppCompatActivity {
         if( !TextUtils.isEmpty(mETStoreCode.getText().toString()) && !(TextUtils.isEmpty(mETReEnterStoreCode.getText().toString())) ){
 
             if (  (mETStoreCode.getText().toString()).equals(mETReEnterStoreCode.getText().toString())  ){
-                PreferencesManager.getInstance().setString(Constants.STOREID,mETStoreCode.getText().toString());
+                PreferencesManager.getInstance().setString(Constants.STOREID,mETStoreCode.getText().toString().trim());
                 Toast.makeText(mContext,"Store Code Changed Sucessfully",Toast.LENGTH_SHORT).show();
                 finish();
             }else {

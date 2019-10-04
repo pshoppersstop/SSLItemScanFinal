@@ -15,10 +15,15 @@ import com.sslitemscan.Constants.Constants;
 import com.sslitemscan.global.PreferencesManager;
 import com.sslitemscan.views.barcodescannerview.ScanData;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.WeakHashMap;
@@ -41,7 +46,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
         mSharedPreferences = SSLApplication.getInstance().getContext().getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
 
-        //getAllScannedData();
+        getAllScannedData();
     }
 
     @Override
@@ -98,9 +103,43 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     }
 
     private void getAllScannedData(){
-        Map<String, ?> allEntries = mSharedPreferences.getAll();
+
+
+        String scanDataHashMapValue = null;
+
+            Map<String, ?> allEntries = mSharedPreferences.getAll();
         for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+             scanDataHashMapValue =(String)allEntries.get("ScanDataHashMap");
+
             Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+            Log.e("ScanDataHashMapValues","****"+scanDataHashMapValue);
         }
+
+
+        JSONObject jsonObject = null;
+        String scanString = "";
+        try {
+            jsonObject = new JSONObject(scanDataHashMapValue.trim());
+            Iterator<String> keys = jsonObject.keys();
+
+            while(keys.hasNext()) {
+                String key = keys.next();
+                if (jsonObject.get(key) instanceof JSONObject) {
+                    // do something with jsonObject here
+                   // Log.e("jsonObject","****"+((JSONObject) jsonObject.get(key)).getString("barCode"));
+                    scanString = scanString+""+((JSONObject) jsonObject.get(key)).getString("barCode")+"."+((JSONObject) jsonObject.get(key)).getString("storeId")
+                            +"."+((JSONObject) jsonObject.get(key)).getString("timeStamp")+"|";
+                }
+            }
+
+            Log.e("scanString","+++++"+scanString);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+
+
+
+
     }
 }

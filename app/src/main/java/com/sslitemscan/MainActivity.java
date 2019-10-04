@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     public void saveStoreCode(){
         if(!TextUtils.isEmpty(mETStoreCode.getText())){
             PreferencesManager.getInstance().setBoolean(Constants.ISLOADED,true);
-            PreferencesManager.getInstance().setString(Constants.STOREID,mETStoreCode.getText().toString());
+            PreferencesManager.getInstance().setString(Constants.STOREID,mETStoreCode.getText().toString().trim());
             LoadNextActivity();
         }else {
             Toast.makeText(mContext," Please Enter StoreCode",Toast.LENGTH_SHORT).show();
