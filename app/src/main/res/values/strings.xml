@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">SSLItemScan</string>
+    <string name="permission_msg">Please allow the permission to use this feature.</string>
 </resources>

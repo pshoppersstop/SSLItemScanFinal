@@ -8,6 +8,15 @@
     tools:context=".ChangeStoreCodeActivity"
     android:background="@color/blue">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/HeaderBar"
+        android:elevation="4dp"
+        />
+
+
     <TextView
         android:id="@+id/textview_change_store_text"
         android:layout_width="wrap_content"

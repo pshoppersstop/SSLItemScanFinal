@@ -7,6 +7,16 @@
     android:layout_height="match_parent"
     tools:context=".ScanActivity">
 
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/HeaderBar"
+        android:elevation="4dp"
+        />
+
+
     <fragment
         android:id="@+id/barcode_scanner"
         android:name="info.androidhive.barcode.BarcodeReader"

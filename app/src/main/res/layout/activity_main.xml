@@ -9,6 +9,14 @@
     android:orientation="vertical"
     android:background="@color/blue">
 
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/my_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        style="@style/HeaderBar"
+        android:elevation="4dp"
+        />
+
     <EditText
         android:id="@+id/edittext_store_code"
         android:layout_width="wrap_content"
