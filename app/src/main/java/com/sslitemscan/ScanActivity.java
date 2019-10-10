@@ -156,7 +156,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e("DeleteProductCode","****"+productCode);
+                        Log.e("DeleteProductCode","******"+productCode);
                         barcodeReader.resumeScanning();
                         dialog.dismiss();
                     }
