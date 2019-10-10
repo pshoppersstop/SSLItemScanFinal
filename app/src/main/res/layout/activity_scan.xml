@@ -20,8 +20,9 @@
     <fragment
         android:id="@+id/barcode_scanner"
         android:name="info.androidhive.barcode.BarcodeReader"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_centerInParent="true"
         app:auto_focus="true"
         app:use_flash="false" />
 

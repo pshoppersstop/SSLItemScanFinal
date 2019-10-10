@@ -58,6 +58,7 @@ import javax.mail.internet.MimeBodyPart;
 import javax.mail.internet.MimeMessage;
 import javax.mail.internet.MimeMultipart;
 
+
 import info.androidhive.barcode.BarcodeReader;
 
 public class ScanActivity extends AppCompatActivity implements BarcodeReader.BarcodeReaderListener{
@@ -95,7 +96,14 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        //barcodeReader.proceedAfterPermission();
+    }
+
+    @Override
     public void onScanned(final Barcode barcode) {
+        barcodeReader.pauseScanning();
         // playing barcode reader beep sound
         barcodeReader.playBeep();
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
@@ -108,10 +116,12 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         this.runOnUiThread(new Runnable() {
             public void run() {
+                 //barcodeReader.resumeScanning();
                 showDialouge(barcode.displayValue);
             }
         });
 
+       // barcodeReader.pauseScanning();
     }
     @Override
     public void onScannedMultiple(List<Barcode> barcodes) {
@@ -120,7 +130,6 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
     @Override
     public void onBitmapScanned(SparseArray<Barcode> sparseArray) {
-
     }
 
     @Override
@@ -134,16 +143,26 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     }
 
 
-    private void showDialouge(String productCode){
+    private void showDialouge(final String productCode){
 
         new AlertDialog.Builder(this)
                 .setMessage("Scanned Product Code: \n\n"+productCode)
                 .setPositiveButton("Scan Next", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        barcodeReader.resumeScanning();
+                        dialog.dismiss();
+                    }
+                })
+                .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        Log.e("DeleteProductCode","****"+productCode);
+                        barcodeReader.resumeScanning();
                         dialog.dismiss();
                     }
                 })
                 .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
                 .show();
     }
 
@@ -174,8 +193,8 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 if (jsonObject.get(key) instanceof JSONObject) {
                     // do something with jsonObject here
                     // Log.e("jsonObject","****"+((JSONObject) jsonObject.get(key)).getString("barCode"));
-                    scanString = scanString + "" + ((JSONObject) jsonObject.get(key)).getString("barCode") + "." + ((JSONObject) jsonObject.get(key)).getString("storeId")
-                            + "." + ((JSONObject) jsonObject.get(key)).getString("timeStamp") + "\n";
+                    scanString = scanString + "" + ((JSONObject) jsonObject.get(key)).getString("barCode") + "," + ((JSONObject) jsonObject.get(key)).getString("storeId")
+                            + "," + ((JSONObject) jsonObject.get(key)).getString("timeStamp") + "\n";
                 }
             }
 
@@ -388,7 +407,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
 
                     }
-                });
+                }) ;
     }
 
 
