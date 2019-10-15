@@ -77,6 +77,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     private Toolbar mToolbar;
     private Context context;
     String scanString = "";
+    int scannedBarcodeCount = 0;
 
 
     @Override
@@ -105,6 +106,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
     @Override
     public void onScanned(final Barcode barcode) {
+        scannedBarcodeCount++;
         barcodeReader.pauseScanning();
         // playing barcode reader beep sound
         barcodeReader.playBeep();
@@ -112,7 +114,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         String format = simpleDateFormat.format(new Date());
         Log.e("MainActivity", "Current Timestamp: " + format+"*****STOREID:"+PreferencesManager.getInstance().getString(Constants.STOREID));
 
-        h.put(format,new ScanData(barcode.displayValue,format,PreferencesManager.getInstance().getString(Constants.STOREID)));
+        h.put(String.valueOf(scannedBarcodeCount),new ScanData(barcode.displayValue,format,PreferencesManager.getInstance().getString(Constants.STOREID)));
 
         PreferencesManager.getInstance().saveHashMap(h);
 
@@ -146,7 +148,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
 
     private void showDialouge(final String productCode){
-
+        Log.e("weakhashmap",h.toString());
         new AlertDialog.Builder(this)
                 .setMessage("Scanned Product Code: \n\n"+productCode)
                 .setPositiveButton("Scan Next", new DialogInterface.OnClickListener() {
@@ -158,9 +160,8 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 .setNegativeButton("Delete", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        Log.e("DeleteProductCode","******"+productCode);
-                        h.remove(h.size()-1);
-                        barcodeReader.resumeScanning();
+                        Log.e("DeleteProductCode","******"+productCode+"****"+h);
+                        removeScannedCode();
                         dialog.dismiss();
                         Log.e("weakhashmap",h.toString());
                     }
@@ -168,6 +169,25 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 .setIcon(android.R.drawable.ic_dialog_alert)
                 .setCancelable(false)
                 .show();
+    }
+
+    private void removeScannedCode(){
+
+        this.runOnUiThread(new Runnable() {
+            public void run() {
+                //barcodeReader.resumeScanning();
+                h.remove(String.valueOf(h.size()));
+
+             /*   synchronized(h){
+                    h.notify();
+                }*/
+
+                barcodeReader.resumeScanning();
+            }
+        });
+
+
+
     }
 
     private void showScanDialouge(){
