@@ -91,6 +91,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         // get the barcode reader instance
         barcodeReader = (BarcodeReader) getSupportFragmentManager().findFragmentById(R.id.barcode_scanner);
         mSharedPreferences = SSLApplication.getInstance().getContext().getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
+        barcodeReader.pauseScanning();
 
        // getAllScannedData();
     }
@@ -98,6 +99,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     @Override
     protected void onResume() {
         super.onResume();
+        showScanDialouge();
         //barcodeReader.proceedAfterPermission();
     }
 
@@ -157,6 +159,22 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         Log.e("DeleteProductCode","******"+productCode);
+                        h.remove(h.size()-1);
+                        barcodeReader.resumeScanning();
+                        dialog.dismiss();
+                        Log.e("weakhashmap",h.toString());
+                    }
+                })
+                .setIcon(android.R.drawable.ic_dialog_alert)
+                .setCancelable(false)
+                .show();
+    }
+
+    private void showScanDialouge(){
+        new AlertDialog.Builder(this)
+                .setMessage("Start Scanning?")
+                .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                    public void onClick(DialogInterface dialog, int which) {
                         barcodeReader.resumeScanning();
                         dialog.dismiss();
                     }
@@ -165,6 +183,8 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 .setCancelable(false)
                 .show();
     }
+
+
 
     private void getAllScannedData() {
 
