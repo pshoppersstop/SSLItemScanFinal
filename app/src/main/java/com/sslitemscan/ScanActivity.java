@@ -7,9 +7,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.os.AsyncTask;
+import android.os.SystemClock;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -78,6 +81,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     private Context context;
     String scanString = "";
     int scannedBarcodeCount = 0;
+    private int IMAGE_SEARCH_PERMISSION_CODE = 9;
 
 
     @Override
@@ -94,14 +98,44 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         mSharedPreferences = SSLApplication.getInstance().getContext().getSharedPreferences(PREF_FILE, Context.MODE_PRIVATE);
         barcodeReader.pauseScanning();
 
+        if ( ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA) != 0){
+            showScanDialouge();
+        }
        // getAllScannedData();
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        showScanDialouge();
+        Log.e("cameraPermission","****"+ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA));
+
         //barcodeReader.proceedAfterPermission();
+    }
+
+
+        private void  getPermissionLoop(){
+            int PERMISSION_ALL = IMAGE_SEARCH_PERMISSION_CODE;
+            String[] PERMISSIONS = {
+                    android.Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                    android.Manifest.permission.READ_EXTERNAL_STORAGE
+            };
+
+            if(hasPermissions(context, PERMISSIONS)){
+                //showScanDialouge();
+            }else {
+                ActivityCompat.requestPermissions( ((Activity) context), PERMISSIONS, PERMISSION_ALL);
+            }
+        }
+
+    public boolean hasPermissions(Context context, String... permissions) {
+        if (context != null && permissions != null) {
+            for (String permission : permissions) {
+                if (ActivityCompat.checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     @Override
@@ -195,6 +229,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                 .setMessage("Start Scanning?")
                 .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int which) {
+                        getPermissionLoop();
                         barcodeReader.resumeScanning();
                         dialog.dismiss();
                     }
@@ -215,34 +250,35 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         if (null != allEntries && allEntries.size() > 0) {
 
-        for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
-            scanDataHashMapValue = (String) allEntries.get("ScanDataHashMap");
+            for (Map.Entry<String, ?> entry : allEntries.entrySet()) {
+                scanDataHashMapValue = (String) allEntries.get("ScanDataHashMap");
 
-            Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
-            Log.e("ScanDataHashMapValues", "****" + scanDataHashMapValue);
-        }
-
-
-        JSONObject jsonObject = null;
-        try {
-            jsonObject = new JSONObject(scanDataHashMapValue.trim());
-            Iterator<String> keys = jsonObject.keys();
-
-            while (keys.hasNext()) {
-                String key = keys.next();
-                if (jsonObject.get(key) instanceof JSONObject) {
-                    // do something with jsonObject here
-                    // Log.e("jsonObject","****"+((JSONObject) jsonObject.get(key)).getString("barCode"));
-                    scanString = scanString + "" + ((JSONObject) jsonObject.get(key)).getString("barCode") + "," + ((JSONObject) jsonObject.get(key)).getString("storeId")
-                            + "," + ((JSONObject) jsonObject.get(key)).getString("timeStamp") + "\n";
-                }
+                Log.e("map values", entry.getKey() + ": " + entry.getValue().toString());
+                Log.e("ScanDataHashMapValues", "****" + scanDataHashMapValue);
             }
 
-            Log.e("scanString", "+++++" + scanString);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
 
+            if (null != scanDataHashMapValue) {
+            JSONObject jsonObject = null;
+            try {
+                jsonObject = new JSONObject(scanDataHashMapValue.trim());
+                Iterator<String> keys = jsonObject.keys();
+
+                while (keys.hasNext()) {
+                    String key = keys.next();
+                    if (jsonObject.get(key) instanceof JSONObject) {
+                        // do something with jsonObject here
+                        // Log.e("jsonObject","****"+((JSONObject) jsonObject.get(key)).getString("barCode"));
+                        scanString = scanString + "" + ((JSONObject) jsonObject.get(key)).getString("barCode") + "," + ((JSONObject) jsonObject.get(key)).getString("storeId")
+                                + "," + ((JSONObject) jsonObject.get(key)).getString("timeStamp") + "\n";
+                    }
+                }
+
+                Log.e("scanString", "+++++" + scanString);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
     }else {
            Toast.makeText(context,"No scanned data found",Toast.LENGTH_SHORT).show();
         }
@@ -292,6 +328,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
                     }
                 });
         AlertDialog alertDialog = dialog.create();
+        alertDialog.setCancelable(false);
         alertDialog.show();
     }
 
@@ -330,6 +367,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
             progressDialog.dismiss();
+            PreferencesManager.getInstance().clearAll();
             Toast.makeText(context,"Email sent !!",Toast.LENGTH_SHORT).show();
         }
     }
