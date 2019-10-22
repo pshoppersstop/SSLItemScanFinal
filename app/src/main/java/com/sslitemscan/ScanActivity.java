@@ -42,6 +42,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.TimerTask;
 import java.util.WeakHashMap;
 
 import javax.activation.CommandMap;
@@ -107,6 +108,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
     @Override
     protected void onResume() {
         super.onResume();
+        barcodeReader.resumeScanning();
         Log.e("cameraPermission","****"+ContextCompat.checkSelfPermission(context, Manifest.permission.CAMERA));
 
         //barcodeReader.proceedAfterPermission();
@@ -209,13 +211,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
         this.runOnUiThread(new Runnable() {
             public void run() {
-                //barcodeReader.resumeScanning();
                 h.remove(String.valueOf(h.size()));
-
-             /*   synchronized(h){
-                    h.notify();
-                }*/
-
                 barcodeReader.resumeScanning();
             }
         });
@@ -472,8 +468,6 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
 
                     @Override
                     public void onPermissionGranted() {
-                        // onItemClickListener.onItemClick(getString(R.string.camera));
-                        //getGalleryPermission(getString(R.string.app_name));
                         getAllScannedData();
                         DisplayUtils.writeToFile(context, fileName, scanString);
 
