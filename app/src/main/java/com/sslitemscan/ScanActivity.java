@@ -146,7 +146,7 @@ public class ScanActivity extends AppCompatActivity implements BarcodeReader.Bar
         barcodeReader.pauseScanning();
         // playing barcode reader beep sound
         barcodeReader.playBeep();
-        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy-hh-mm-ss");
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
         String format = simpleDateFormat.format(new Date());
         Log.e("MainActivity", "Current Timestamp: " + format+"*****STOREID:"+PreferencesManager.getInstance().getString(Constants.STOREID));
 

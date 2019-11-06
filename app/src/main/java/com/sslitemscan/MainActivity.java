@@ -88,9 +88,26 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if(!TextUtils.isEmpty(username) && !TextUtils.isEmpty(password)){
-            if(   ( (username.equals("Emp1") && password.equals("Pass1")) ||
-                    (username.equals("Emp2") && password.equals("Pass2")) ||
-                    (username.equals("Emp3") && password.equals("Pass3")) ) ) {
+            if(   ( (username.equals("U636") && password.equals("P908")) ||
+                    (username.equals("U725") && password.equals("P175")) ||
+                    (username.equals("U336") && password.equals("P008")) ||
+                    (username.equals("U918") && password.equals("P754")) ||
+                    (username.equals("U141") && password.equals("P423")) ||
+                    (username.equals("U196") && password.equals("P588")) ||
+                    (username.equals("U196") && password.equals("P588")) ||
+                    (username.equals("U700") && password.equals("P100")) ||
+                    (username.equals("U989") && password.equals("P967"))||
+                    (username.equals("U474") && password.equals("P422"))||
+                    (username.equals("U647") && password.equals("P941")) ||
+                    (username.equals("U920") && password.equals("P760")) ||
+                    (username.equals("U839") && password.equals("P517")) ||
+                    (username.equals("U126") && password.equals("P378")) ||
+                    (username.equals("U683") && password.equals("P049")) ||
+                    (username.equals("U477") && password.equals("P431")) ||
+                    (username.equals("U743") && password.equals("P229")) ||
+                    (username.equals("U983") && password.equals("P949")) ||
+                    (username.equals("U832") && password.equals("P496"))||
+                    (username.equals("U201") && password.equals("P603")) )) {
 
                 if(!TextUtils.isEmpty(mETStoreCode.getText())){
                     PreferencesManager.getInstance().setBoolean(Constants.ISLOADED,true);
